@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Preview - {{ data.name }}
+    </title>
+    <meta name="keywords" content="PopEunBin, Preview, {{ data.name }}">
+    <meta name="description" content="For Pop EunBin - Preview - {{ data.name }}">
+    <meta name="author" content="Twitter @EveryEunbin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Preview - {{ data.name }}">
+    <meta property="og:url" content="https://forpopeunbin.deta.dev/preview/{{ data.key}}">
+    <meta property="og:description" content="For Pop EunBin - Preview - {{ data.name }}">
+    <meta property="og:image" content="{{ data.imgNormalUrl }}">
+    <meta property="twitter:title" content="Preview - {{ data.name }}">
+    <meta property="twitter:description" content="For Pop EunBin - Preview - {{ data.name }}">
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:image" content="{{ data.imgNormalUrl}}">
+    <meta property="twitter:creator" content="@EveryEunbin">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="shortcut icon" href={{ url_for('static', filename='favicon.ico' ) }}> -->
+    <link rel="icon" href="{{ data.imgNormalUrl }}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;900&family=Noto+Sans+TC:wght@100;300;400;500;900&family=Nunito:wght@300;400;900&display=swap">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href={{url_for('static', filename='page.css' )}}>
+</head>
+
+<body>
+    <div class="pop-page">
+        <div class="fixed-top">
+            <div class="accordion" id="accordionInfo">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingInfo">
+                        <button class="accordion-button" id="headingInfoButton" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseInfo" aria-expanded="true" aria-controls="collapseInfo">
+                            <div class="d-flex justify-content-between w-100">
+                                <div class="px-3">
+                                    {{ data.name }}
+                                </div>
+                                <div class=""></div>
+                                <div class="px-3" id="idCount"></div>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapseInfo" class="accordion-collapse collapse" aria-labelledby="headingInfo"
+                        data-bs-parent="#accordionInfo">
+                        <div class="accordion-body">
+                            <div>picture source: {{ data.imgInfo }}
+                            </div>
+                            <hr />
+                            <div>sound source: {{ data.audioInfo }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex justify-content-center pop" onmousedown="mouseDown(event)" onmouseup="mouseUp(event)" ontouchstart="mouseDown(event)"
+                    ontouchend="mouseUp(event)">
+                        <div class="pop-count-num" id="popCountNum">
+                        </div>
+                        <!-- <div class="top-div"></div> -->
+                        <img id="imgNormal" src="{{ data.imgNormalUrl }}" alt="normal image" style="display: block;">
+                        <img id="imgPop" src="{{ data.imgPopUrl }}" alt="pop image" style="display: none;">
+                        <audio id="audioUrl" src="{{ data.audioUrl }}" type="audio/mpeg" preload="auto"></audio>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed-bottom">
+            <div class="container-lg">
+
+            </div>
+        </div>
+
+        <div id="alertModal"></div>
+    </div>
+
+    <script>
+        const text = "This page is avaliable for 7 days after you submitted. We will consider or maybe modify it before we launch it on popeunbin.deta.dev."
+        alertModal("Please read",text)
+        
+        function alertModal(title,content){
+            document.getElementById('alertModal').innerHTML = domModal(title,content);
+        }
+
+        function domModal(title,content){
+            return `<div class="modal fade show" id="modal" tabindex="-1" aria-labelledby="modalLabel" style="display: block;"
+            role="dialog" aria-modal="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalLabel">${title}</h1>
+                    </div>
+                    <div class="modal-body">
+                        ${content}
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="closeModal()" type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="backdrop" class="modal-backdrop fade show"></div>`
+        }
+
+        // close modal
+        function closeModal() {
+            document.getElementById('modal').remove();
+            document.getElementById('backdrop').remove();
+        }
+    </script>
+
+    <script>
+        var id = "{{ data.key }}";
+        var idCount = Number("{{ data.popCount }}");
+        document.getElementById("idCount").innerHTML = formatNumber(idCount);
+
+        var popCount = document.getElementById("popCountNum");
+
+        var imgNormal = document.getElementById("imgNormal");
+        var imgPop = document.getElementById("imgPop");
+        var audioUrl = document.getElementById("audioUrl");
+
+        preloadImage(imgPop.src, function () { return });
+
+        var count = 0;
+
+        popCount.innerHTML = count;
+        var audio = audioUrl;
+
+
+        function formatNumber(num) {
+            return (new Intl.NumberFormat('en-US')).format(num)
+        }
+
+        function mouseDown(e) {
+            imgNormal.style.display = 'none';
+            imgPop.style.display = 'block';
+            audio.currentTime = 0;
+            audio.play();
+            increaseCount();
+            e.preventDefault();
+        }
+
+        function mouseUp(e) {
+            imgPop.style.display = 'none';
+            imgNormal.style.display = 'block';
+            e.preventDefault();
+        }
+
+        function increaseCount() {
+            count++;
+            popCount.innerHTML = formatNumber(count);
+        }
+
+        function preloadImage(url, callback) {
+            var img = new Image();
+            img.src = url;
+            img.onload = callback;
+        }
+    </script>
+</body>
+
+</html>

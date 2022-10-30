@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <meta name="keywords" content="Pop EunBin, Park Eunbin, 박은빈">
+    <meta name="description" content="Pop EunBin, click Park Eunbin characters">
+    <meta name="author" content="Twitter @EveryEunbin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Pop EunBin">
+    <meta property="og:url" content="https://popeunbin.deta.dev">
+    <meta property="og:description" content="Pop EunBin, click Park Eunbin characters">
+    <meta property="og:image" content="/favicon.png">
+    <meta property="twitter:title" content="Pop EunBin">
+    <meta property="twitter:description" content="Pop EunBin, click Park Eunbin characters">
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:image" content="/favicon.png">
+    <meta property="twitter:site" content="@EveryEunbin">
+
+    <meta charset="utf-8">
+
+    <link rel="shortcut icon" href="/favicon.png">
+    <link rel="icon" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;900&amp;family=Noto+Sans+TC:wght@100;300;400;500;900&amp;family=Nunito:wght@300;400;900&amp;display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <style>
+        .sort-order:hover {
+            background-color: #6fa8dc;
+        }
+        
+        .sort-order {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-md">
+        <div class="text-center pt-3">
+            <h2>Summary</h2>
+        </div>
+        <div class="text-center mb-4">
+            <h4 id="allClick"></h4>
+        </div>
+        <div id="allTable" class="table-responsive container-fluid text-center">
+            <h3 class="position-absolute top-50 start-50 translate-middle">Loading...</h3>
+        </div>
+    </div>
+
+
+
+    <script>
+        updateBoard()
+
+        function formatNumber(num) {
+            return (new Intl.NumberFormat('en-US')).format(num)
+        }
+
+        function updateBoard() {
+            fetch('/api/list')
+                .then(res => res.json())
+                .then(json => mainBoard(json))
+                .catch(err => console.error(err))
+        }
+
+        function mainBoard(arr) {
+            let text = `<table id="table" class="table table-striped table-hover table-bordered text-center">
+                <thead class="table-primary">
+                <tr style="height:60px;">
+                    <th class="sort-order" onclick="javascript:SortTable(0,'T')" scope="col" style="padding-bottom:15px;">Name</th>
+                    <th scope="col" style="padding-bottom:15px;">Pic</th>
+                    <th class="sort-order" onclick="javascript:SortTable(2,'N')" scope="col" style="padding-bottom:15px;">Total</th>
+                    <th class="sort-order" onclick="javascript:SortTable(3,'N')" scope="col" style="padding-bottom:15px;">Yours</th>
+                </tr>
+            </thead>
+            <tbody>
+            `;
+
+            let totalCount = 0;
+            let totalYourCount = 0;
+
+            for (let i = 0; i < arr.length; i++) {
+                let item = arr[i];
+                let yourCount = localStorage.getItem(item.key) ? localStorage.getItem(item.key) : 0;
+                totalCount += item.popCount;
+                totalYourCount += Number(yourCount);
+                text += domList(item, yourCount)
+            }
+            text += `</tbody></table>`;
+            document.getElementById('allClick').innerHTML = `Total clicks are ${formatNumber(totalCount)} and your total clicks are ${formatNumber(totalYourCount)}.`
+            document.getElementById('allTable').innerHTML = text;
+        }
+
+        function domList(item, number) {
+            return `<tr onclick="document.location='/${item.key}'">
+                <td>${item.name}</td>
+                <td><img src="${item.imgNormalUrl}" alt="${item.name}" style="object-fit: cover; object-position: center; height: 50px; width: 50px;"></td>
+                <td>${formatNumber(item.popCount)}</td>
+                <td>${formatNumber(number)}</td>
+                </tr>`
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        /* 
+           Willmaster Table Sort
+           Version 1.1
+           August 17, 2016
+           Updated GetDateSortingKey() to correctly sort two-digit months and days numbers with leading 0.
+           Version 1.0, July 3, 2011
+        
+           Will Bontrager
+           https://www.willmaster.com/
+           Copyright 2011,2016 Will Bontrager Software, LLC
+        
+           This software is provided "AS IS," without 
+           any warranty of any kind, without even any 
+           implied warranty such as merchantability 
+           or fitness for a particular purpose.
+           Will Bontrager Software, LLC grants 
+           you a royalty free license to use or 
+           modify this software provided this 
+           notice appears on all copies. 
+        */
+        //
+        // One placed to customize - The id value of the table tag.
+
+        var TableIDvalue = "table";
+
+        //
+        //////////////////////////////////////
+        var TableLastSortedColumn = -1;
+        function SortTable() {
+            var sortColumn = parseInt(arguments[0]);
+            var type = arguments.length > 1 ? arguments[1] : 'T';
+            var dateformat = arguments.length > 2 ? arguments[2] : '';
+            var table = document.getElementById(TableIDvalue);
+            var tbody = table.getElementsByTagName("tbody")[0];
+            var rows = tbody.getElementsByTagName("tr");
+            var arrayOfRows = new Array();
+            type = type.toUpperCase();
+            dateformat = dateformat.toLowerCase();
+            for (var i = 0, len = rows.length; i < len; i++) {
+                arrayOfRows[i] = new Object;
+                arrayOfRows[i].oldIndex = i;
+                var celltext = rows[i].getElementsByTagName("td")[sortColumn].innerHTML.replace(/<[^>]*>/g, "");
+                if (type == 'D') { arrayOfRows[i].value = GetDateSortingKey(dateformat, celltext); }
+                else {
+                    var re = type == "N" ? /[^\.\-\+\d]/g : /[^a-zA-Z0-9]/g;
+                    arrayOfRows[i].value = celltext.replace(re, "").substr(0, 25).toLowerCase();
+                }
+            }
+            if (sortColumn == TableLastSortedColumn) { arrayOfRows.reverse(); }
+            else {
+                TableLastSortedColumn = sortColumn;
+                switch (type) {
+                    case "N": arrayOfRows.sort(CompareRowOfNumbers); break;
+                    case "D": arrayOfRows.sort(CompareRowOfNumbers); break;
+                    default: arrayOfRows.sort(CompareRowOfText);
+                }
+            }
+            var newTableBody = document.createElement("tbody");
+            for (var i = 0, len = arrayOfRows.length; i < len; i++) {
+                newTableBody.appendChild(rows[arrayOfRows[i].oldIndex].cloneNode(true));
+            }
+            table.replaceChild(newTableBody, tbody);
+        } // function SortTable()
+
+        function CompareRowOfText(a, b) {
+            var aval = a.value;
+            var bval = b.value;
+            return (aval == bval ? 0 : (aval > bval ? 1 : -1));
+        } // function CompareRowOfText()
+
+        function CompareRowOfNumbers(b, a) {
+            var aval = /\d/.test(a.value) ? parseFloat(a.value) : 0;
+            var bval = /\d/.test(b.value) ? parseFloat(b.value) : 0;
+            return (aval == bval ? 0 : (aval > bval ? 1 : -1));
+        } // function CompareRowOfNumbers()
+
+        function GetDateSortingKey(format, text) {
+            if (format.length < 1) { return ""; }
+            format = format.toLowerCase();
+            text = text.toLowerCase();
+            text = text.replace(/^[^a-z0-9]*/, "");
+            text = text.replace(/[^a-z0-9]*$/, "");
+            if (text.length < 1) { return ""; }
+            text = text.replace(/[^a-z0-9]+/g, ",");
+            var date = text.split(",");
+            if (date.length < 3) { return ""; }
+            var d = 0, m = 0, y = 0;
+            for (var i = 0; i < 3; i++) {
+                var ts = format.substr(i, 1);
+                if (ts == "d") { d = date[i]; }
+                else if (ts == "m") { m = date[i]; }
+                else if (ts == "y") { y = date[i]; }
+            }
+            d = d.replace(/^0/, "");
+            if (d < 10) { d = "0" + d; }
+            if (/[a-z]/.test(m)) {
+                m = m.substr(0, 3);
+                switch (m) {
+                    case "jan": m = String(1); break;
+                    case "feb": m = String(2); break;
+                    case "mar": m = String(3); break;
+                    case "apr": m = String(4); break;
+                    case "may": m = String(5); break;
+                    case "jun": m = String(6); break;
+                    case "jul": m = String(7); break;
+                    case "aug": m = String(8); break;
+                    case "sep": m = String(9); break;
+                    case "oct": m = String(10); break;
+                    case "nov": m = String(11); break;
+                    case "dec": m = String(12); break;
+                    default: m = String(0);
+                }
+            }
+            m = m.replace(/^0/, "");
+            if (m < 10) { m = "0" + m; }
+            y = parseInt(y);
+            if (y < 100) { y = parseInt(y) + 2000; }
+            return "" + String(y) + "" + String(m) + "" + String(d) + "";
+        } // function GetDateSortingKey()
+    </script>
+</body>
+
+</html>

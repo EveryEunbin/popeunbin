@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>For Pop EunBin</title>
+    <meta name="keywords" content="PopEunBin">
+    <meta name="description" content="Submit EunBin Characters for Pop EunBin">
+    <meta name="author" content="Twitter @EveryEunbin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="For Pop EunBin">
+    <meta property="og:url" content="https://forpopeunbin.deta.dev">
+    <meta property="og:description" content="Submit EunBin Characters for Pop EunBin">
+    <meta property="og:image" content={{ url_for('static', filename='favicon.png' ) }}>
+    <meta property="twitter:title" content="For Pop EunBin">
+    <meta property="twitter:description" content="Submit EunBin Characters for Pop EunBin">
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:image" content={{ url_for('static', filename='favicon.png' ) }}>
+    <meta property="twitter:creator" content="@EveryEunbin">
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href={{ url_for('static', filename='favicon.png' ) }}>
+    <link rel="icon" href={{ url_for('static', filename='favicon.png' ) }}>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;900&family=Noto+Sans+TC:wght@100;300;400;500;900&family=Nunito:wght@300;400;900&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href={{url_for('static', filename='submit.css' )}}>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center p-3">For Pop EunBin</h1>
+        <div class="row">
+            <!-- Left -->
+            <div class="col-md-6">
+                <form enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name"
+                            placeholder="Character Name- ... e.g. YoungWoo-WoW" required>
+                    </div>
+                    <!-- Image -->
+                    <div class="mb-3">
+                        <label for="selectImage" class="form-label">Choose picture url or file (png, jpeg, jpg)</label>
+                        <select class="form-select" id="selectImage" onchange="selectType(this,'urlImage','fileImage')"
+                            aria-label="label select" required>
+                            <!-- <option selected id="firstOption">Open this select menu</option> -->
+                            <option value="url">Url</option>
+                            <option value="file">File</option>
+                        </select>
+                    </div>
+                    <div id="urlImage">
+                        <div class="mb-3">
+                            <label for="imgNormalUrl" class="form-label">Normal picture url</label>
+                            <input type="url" class="form-control" id="imgNormalUrl" name="imgNormalUrl"
+                                placeholder="https://forpopeunbin.deta.dev/normal.jpg">
+                        </div>
+                        <div class="mb-3">
+                            <label for="imgPopUrl" class="form-label">Pop picture url</label>
+                            <input type="url" class="form-control" id="imgPopUrl" name="imgPopUrl"
+                                placeholder="https://forpopeunbin.deta.dev/pop.jpg">
+                        </div>
+                    </div>
+                    <div id="fileImage" style="display: none;">
+                        <div class="mb-3">
+                            <label for="imgNormalFile" class="form-label">Normal picture file</label>
+                            <input class="form-control" type="file" id="imgNormalFile" accept="image/png, image/jpeg"
+                                onchange="uploadFile('imgNormalFile','imgNormalUrl')">
+                        </div>
+                        <div class="mb-3">
+                            <label for="imgPopFile" class="form-label">Pop picture file</label>
+                            <input class="form-control" type="file" id="imgPopFile" accept="image/png, image/jpeg"
+                                onchange="uploadFile('imgPopFile','imgPopUrl')">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imgInfo" class="form-label">Picture source</label>
+                        <input type="text" class="form-control" id="imgInfo" name="imgInfo"
+                            placeholder="youtube, instagram or twitter">
+                    </div>
+
+                    <!-- Audio -->
+                    <div class="mb-3">
+                        <label for="selectAudio" class="form-label">Choose sound url or file (mp3)</label>
+                        <select class="form-select" id="selectAudio" onchange="selectType(this,'urlAudio','fileAudio')"
+                            aria-label="label select" required>
+                            <option value="url">Url</option>
+                            <option value="file">File</option>
+                        </select>
+                    </div>
+                    <div id="urlAudio">
+                        <div class="mb-3">
+                            <label for="audioUrl" class="form-label">Sound url</label>
+                            <input type="url" class="form-control" id="audioUrl" name="audioUrl"
+                                placeholder="https://forpopeunbin.deta.dev/wow.mp3">
+                        </div>
+                    </div>
+                    <div id="fileAudio" style="display: none;">
+                        <div class="mb-3">
+                            <label for="audioFile" class="form-label">Sound file</label>
+                            <input class="form-control" type="file" id="audioFile" accept="audio/mpeg"
+                                onchange="uploadFile('audioFile','audioUrl')">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="audioInfo" class="form-label">Sound source</label>
+                        <input type="text" class="form-control" id="audioInfo" name="audioInfo"
+                            placeholder="youtube, instagram or twitter">
+                    </div>
+                    <div class="mb-3 text-center">
+                        <button id="prebtn" type="button" class="btn btn-primary" onclick="preview()">Preview</button>
+                        <button type="button" class="btn btn-warning" onclick="clearForm()">Clear</button>
+                        <button id="submitbtn" type="button" class="btn btn-success" onclick="submitForm()"><span
+                                class="spinner-border spinner-border-sm" style="display: none;"></span>Submit</button>
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Right -->
+            <div class="col-md-6">
+                <div id="popShow" class="d-flex justify-content-center pop mb-3" onmousedown="mouseDown(event)"
+                    onmouseup="mouseUp(event)" ontouchstart="mouseDown(event)" ontouchend="mouseUp(event)">
+                    <div class="pop-count-num" id="popCountNum">
+                    </div>
+                    <!-- <div class="top-div"></div> -->
+                    <!-- <img id="imgShow"> -->
+                    <img id="preImgNormal" alt="normal image" style="display: none;">
+                    <img id="preImgPop" alt="pop image" style="display: none;">
+
+                </div>
+            </div>
+        </div>
+        <div id="alertModal"></div>
+    </div>
+
+    <script>
+        const text = "Only Park EunBin pictures can be used. We accept file with less than 3 MB. Sound should have duration less than 2 seconds."
+        alertModal("Please read",text)
+        
+        function alertModal(title,content){
+            document.getElementById('alertModal').innerHTML = domModal(title,content);
+        }
+
+        function domModal(title,content){
+            return `<div class="modal fade show" id="modal" tabindex="-1" aria-labelledby="modalLabel" style="display: block;"
+            role="dialog" aria-modal="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalLabel">${title}</h1>
+                    </div>
+                    <div class="modal-body">
+                        ${content}
+                    </div>
+                    <div class="modal-footer">
+                        <button onclick="closeModal()" type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="backdrop" class="modal-backdrop fade show"></div>`
+        }
+
+        // close modal
+        function closeModal() {
+            document.getElementById('modal').remove();
+            document.getElementById('backdrop').remove();
+        }
+    </script>
+
+    <script>
+        // Left
+        selectType(document.getElementById('selectImage'), 'urlImage', 'fileImage')
+        selectType(document.getElementById('selectAudio'), 'urlAudio', 'fileAudio')
+
+        // document.getElementById('imgNormalUrl').addEventListener("change", changeBtn);
+        // document.getElementById('imgPopUrl').addEventListener("change", changeBtn);
+        // document.getElementById('audioUrl').addEventListener("change", changeBtn);
+
+        var submitBtn = document.getElementById('submitbtn');
+
+        /*function changeBtn() {
+            let imgNormal = document.getElementById("imgNormalUrl").value;
+            let imgPop = document.getElementById("imgPopUrl").value;
+            let audioUrl = document.getElementById("audioUrl").value;
+            if (imgNormal != "" && imgPop != "" && audioUrl != "") {
+                document.getElementById('prebtn').disabled = false;
+            } 
+        }*/
+
+        function selectType(select, urlId, fileId) {
+            if (select.value == 'file') {
+                document.getElementById(urlId).style.display = "none";
+                document.getElementById(fileId).style.display = "block";
+            } else if (select.value == 'url') {
+                document.getElementById(urlId).style.display = "block";
+                document.getElementById(fileId).style.display = "none";
+            }
+        }
+        function clearForm() {
+            document.getElementById('popShow').style.visibility = "hidden";
+            const inputTag = document.querySelectorAll('input');
+            inputTag.forEach((item) => {
+                item.value = "";
+            });
+            document.getElementById('prebtn').disabled = false;
+        }
+        function uploadFile(idFirst, idSecond) {
+            let fileId = document.getElementById(idFirst);
+            let fileData = fileId.files[0]
+            // check file size (< 3MB)
+            if (fileData.size > 3 * 1024 * 1024) {
+                alertModal('Alert','File must be less than 3 MB.')
+                fileId.value = "";
+                return
+            }
+            let fd = new FormData()
+            fd.append('filedata', fileData)
+
+            fetch('/uploadfile', {
+                method: 'POST',
+                body: fd
+            })
+                .then(res => res.json())
+                .then(json => linkId(json, idSecond))
+                .catch(err => alertModal('Alert','Please try to select file again.'))
+
+        }
+        function linkId(json, id) {
+            if (json.status == 'success') {
+                document.getElementById(id).value = json.url;
+                // changeBtn()
+            } else {
+                alertModal('Alert','Please try to select file again.')
+            }
+
+        }
+
+        function submitForm() {
+            const inputTag = document.querySelectorAll('input');
+            var data = {};
+
+            for (let item of inputTag) {
+                if (item.id == 'imgNormalFile' || item.id == 'imgPopFile' || item.id == 'audioFile') {
+                    // do nothing
+                } else if (item.id == 'name') {
+                    if (item.value != '') {
+                        data[item.id] = item.value;
+                    } else {
+                        return alertModal('Alert','Please give a name.')
+                    }
+                } else if (item.id == 'imgNormalUrl' || item.id == 'imgPopUrl') {
+                    const pattern = (/\.(jpe?g|png)$/i);
+                    if (pattern.test(item.value)) {
+                        data[item.id] = item.value;
+                    } else {
+                        return alertModal('Alert','Please use only .png, .jpeg or .jpg.')
+                    }
+                } else if (item.id == 'audioUrl') {
+                    const pattern = (/\.(mp3)$/i);
+                    if (pattern.test(item.value)) {
+                        data[item.id] = item.value;
+                    } else {
+                        return alertModal('Alert','Please use only .mp3.')
+                    }
+                } else {
+                    if (item.value != '') {
+                        data[item.id] = item.value;
+                    } else {
+                        return alertModal('Alert','Please give source of picture or sound.')
+                    }
+                }
+            }
+            submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span>Waiting`
+            // console.log(data)
+            fetch('/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(res => res.json())
+                .then(json => resSubmit(json))
+                .catch(err => alertModal('Alert','Please try to submit it again!!!'))
+        }
+
+        function resSubmit(json) {
+            if (json.status == 'success') {
+                submitBtn.innerHTML = "Complete";
+                newUrl = json.text;
+                window.location.replace(newUrl);
+            } else {
+                submitBtn.innerHTML = "Submit";
+                alertModal('Alert',json.text)
+            }
+
+        }
+
+        // Right
+        function preview() {
+            // var showImg = document.getElementById("imgShow");
+            var popCount = document.getElementById("popCountNum");
+            var imgNormal = document.getElementById("imgNormalUrl").value;
+            var imgPop = document.getElementById("imgPopUrl").value;
+            var audioUrl = document.getElementById("audioUrl").value;
+            if (imgNormal == '' || imgPop == '' || audioUrl == '') {
+                alertModal('Alert','Please give two pictures and sound.')
+                return
+            }
+            var preImgNormal = document.getElementById("preImgNormal");
+            var preImgPop = document.getElementById("preImgPop");
+            preImgNormal.src = imgNormal
+            preImgPop.src = imgPop
+            preImgNormal.style.display = 'block';
+
+            var count = 0;
+            popCount.innerHTML = count;
+            var audio = new Audio(audioUrl);
+            preloadImage(imgNormal, function () { return });
+            preloadImage(imgPop, function () { return });
+            window.count = count
+            window.audio = audio
+            window.preImgNormal = preImgNormal
+            window.preImgPop = preImgPop
+            window.popCount = popCount
+        }
+        var showImg = document.getElementById("imgShow");
+        function mouseDown(e) {
+            preImgNormal.style.display = 'none';
+            preImgPop.style.display = 'block';
+            audio.currentTime = 0;
+            audio.play();
+            increaseCount();
+            e.preventDefault();
+        }
+
+        function mouseUp(e) {
+            preImgPop.style.display = 'none';
+            preImgNormal.style.display = 'block';
+            e.preventDefault();
+        }
+
+        function increaseCount() {
+            count++;
+            popCount.innerHTML = count;
+        }
+
+        function preloadImage(url, callback) {
+            var img = new Image();
+            img.src = url;
+            img.onload = callback;
+        }
+
+    </script>
+</body>
+
+</html>

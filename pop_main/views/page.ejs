@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= data.name %>
+    </title>
+    <meta name="keywords" content="PopEunBin, <%= data.name %>">
+    <meta name="description" content="Pop EunBin - <%= data.name %>">
+    <meta name="author" content="Twitter @EveryEunbin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="<%= data.name %>">
+    <meta property="og:url" content="https://popeunbin.deta.dev/<%= data.key %>">
+    <meta property="og:description" content="Pop EunBin - <%= data.name %>">
+    <meta property="og:image" content="<%= data.imgNormalUrl %>">
+    <meta property="twitter:title" content="<%= data.name %>">
+    <meta property="twitter:description" content="Pop EunBin - <%= data.name %>">
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:image" content="<%= data.imgNormalUrl %>">
+    <meta property="twitter:creator" content="@EveryEunbin">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="<%= data.imgNormalUrl %>">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;900&family=Noto+Sans+TC:wght@100;300;400;500;900&family=Nunito:wght@300;400;900&display=swap">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="/css/page.css">
+</head>
+
+<body>
+    <div class="pop-page">
+        <div class="fixed-top">
+            <div class="accordion" id="accordionInfo">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingInfo">
+                        <button class="accordion-button" id="headingInfoButton" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseInfo" aria-expanded="false" aria-controls="collapseInfo">
+                            <div class="d-flex justify-content-between w-100">
+                                <div class="px-3">
+                                    <%= data.name %>
+                                </div>
+                                <div class=""></div>
+                                <div class="px-3" id="idCount"></div>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapseInfo" class="accordion-collapse collapse" aria-labelledby="headingInfo"
+                        data-bs-parent="#accordionInfo">
+                        <div class="accordion-body">
+                            <div>picture source: <%= data.imgInfo %>
+                            </div>
+                            <hr />
+                            <div>sound source: <%= data.audioInfo %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex justify-content-center pop" onmousedown="mouseDown(event)"
+                        onmouseup="mouseUp(event)" ontouchstart="mouseDown(event)" ontouchend="mouseUp(event)">
+                        <div class="pop-count-num" id="popCountNum">
+                        </div>
+                        <!-- <div class="top-div"></div> -->
+                        <img id="imgNormal" src="<%= data.imgNormalUrl %>" style="display:block;" alt="normal image">
+                        <img id="imgPop" src="<%= data.imgPopUrl %>" style="display:none;" alt="pop image">
+                        <audio id="audioUrl" src="<%= data.audioUrl %>" type="audio/mpeg" preload="auto"></audio>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed-bottom">
+            <div class="container-lg">
+
+            </div>
+        </div>
+    </div>
+
+    <!-- board -->
+    <div class="fixed-bottom">
+        <div class="container-lg">
+            <div class="accordion" id="accordionList">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingList">
+                        <button id="headingListButton" class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseList" aria-expanded="false" aria-controls="collapseList">
+                            <div class="d-flex align-items-center w-100 me-3" id="champ">
+                                <div>loading...</div>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapseList" class="accordion-collapse collapse" aria-labelledby="headingList"
+                        data-bs-parent="#accordionList">
+                        <div class="accordion-body">
+                            <div class="board">
+                                <div class="list-group list-group-flush">
+
+                                    <div id="updateList"></div>
+
+                                    <a href="/" style="text-decoration: none;">
+                                        <div
+                                            class="list-group-item list-group-item-action d-flex align-items-center data-info me-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
+                                                fill="currentColor" class="bi bi-arrow-left me-3" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                                            </svg>
+                                            <div id="lengthList"></div>
+                                        </div>
+                                    </a>
+                                    <a href="/summary" style="text-decoration: none;">
+                                        <div
+                                            class="list-group-item list-group-item-action d-flex align-items-center data-info me-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
+                                                fill="currentColor" class="bi bi-file-earmark-text me-3"
+                                                viewBox="0 0 16 16">
+                                                <path
+                                                    d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z" />
+                                                <path
+                                                    d="M9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.5L9.5 0zm0 1v2A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5z" />
+                                            </svg>
+                                            show summary
+                                        </div>
+                                    </a>
+                                    <a href="https://forpopeunbin.deta.dev" style="text-decoration: none;"
+                                        target="_blank">
+                                        <div
+                                            class="list-group-item list-group-item-action d-flex align-items-center data-info me-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
+                                                fill="currentColor" class="bi bi-plus-lg me-3" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M8 0a1 1 0 0 1 1 1v6h6a1 1 0 1 1 0 2H9v6a1 1 0 1 1-2 0V9H1a1 1 0 0 1 0-2h6V1a1 1 0 0 1 1-1z" />
+                                            </svg>
+                                            help us add more eunbin
+                                        </div>
+                                    </a>
+                                    <a href="" target="_blank" style="text-decoration: none;">
+                                        <div
+                                            class="list-group-item list-group-item-action d-flex align-items-center data-info me-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
+                                                fill="currentColor" class="bi bi-github me-3" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                                            </svg>
+                                            Fixbug
+                                        </div>
+
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var id = "<%-data.key%>";
+        var idCount = Number("<%-data.popCount%>");
+        document.getElementById("idCount").innerHTML = formatNumber(idCount);
+        updateBoard()
+
+        var popCount = document.getElementById("popCountNum");
+
+        var imgNormal = document.getElementById("imgNormal");
+        var imgPop = document.getElementById("imgPop");
+        var audioUrl = document.getElementById("audioUrl");
+
+        if (getStorage("unupload")) {
+            var unUploadAll = getStorage("unupload");
+        } else {
+            setStorage("unupload", {})
+            var unUploadAll = {};
+        }
+        var unUploadCount = unUploadAll[id] ? unUploadAll[id] : 0;
+
+        var count = localStorage.getItem(id) ? localStorage.getItem(id) : 0;
+
+        popCount.innerHTML = formatNumber(count);
+        var audio = audioUrl;
+        // var audio = new Audio(audioUrl);
+
+        // variable for board
+        var champId = '';
+        var oldCountObj = {};
+
+        // Time loop send unupload count
+        setInterval(sendUnUpload, 5000);
+        // Time loop update board
+        setInterval(updateBoard, 12000);
+
+        function formatNumber(num) {
+            return (new Intl.NumberFormat('en-US')).format(num)
+        }
+
+        function clickPop() {
+            document.getElementById('headingListButton').click()
+        }
+
+        function mouseDown(e) {
+            imgNormal.style.display = 'none';
+            imgPop.style.display = 'block';
+            audio.currentTime = 0;
+            audio.play();
+            increaseCount();
+            e.preventDefault();
+        }
+
+        function mouseUp(e) {
+            imgPop.style.display = 'none';
+            imgNormal.style.display = 'block';
+            e.preventDefault();
+        }
+
+        function increaseCount() {
+            count++;
+            popCount.innerHTML = formatNumber(count);
+            localStorage.setItem(id, count);
+            unUploadCount++
+            unUploadAll[id] = unUploadCount;
+            setStorage('unupload', unUploadAll);
+        }
+
+        /*function preloadImage(url, callback) {
+            var img = new Image();
+            img.src = url;
+            img.onload = callback;
+        }*/
+
+        function setStorage(key, value) {
+            if (value === undefined) window.localStorage.removeItem(key)
+            else window.localStorage.setItem(key, JSON.stringify(value))
+        }
+
+        function removeStorage(key) {
+            window.localStorage.removeItem(key)
+        }
+
+        function getStorage(key) {
+            const str = window.localStorage.getItem(key)
+            return str ? JSON.parse(str) : undefined
+        }
+
+        async function sendUnUpload() {
+            let data = getStorage('unupload');
+
+            if (Object.keys(data).length > 0) {
+                setStorage('unupload', {});
+                unUploadCount = 0;
+                unUploadAll = {};
+                let response = await fetch("/api/upload/", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                // let result = await response.json();
+                // console.log(result.text)
+            }
+        }
+
+        function updateNumber(id, oldNumber, newNumber) {
+            let gap = Math.ceil((newNumber - oldNumber) / 50);
+            document.getElementById(id).innerHTML = formatNumber(oldNumber);
+            if (oldNumber + gap < newNumber) {
+                oldNumber = oldNumber + gap;
+                setTimeout(updateNumber, 60, id, oldNumber, newNumber)
+            } else {
+                document.getElementById(id).innerHTML = formatNumber(newNumber);
+            }
+        }
+
+        function updateBoard() {
+            fetch('/api/list')
+                .then(res => res.json())
+                .then((json) => {
+                    if (document.getElementById('updateList').innerHTML == "") {
+                        firstBoard(json)
+                    } else {
+                        secondBoard(json)
+                    }
+                })
+                .catch(err => console.error(err))
+        }
+
+        function firstBoard(arr) {
+            arr.sort(function (a, b) {
+                return b.popCount - a.popCount;
+            });
+            let lengthList = arr.length;
+            oldCountObj = arr.reduce((o, item) => ({ ...o, [item.key]: item.popCount }), {});
+            arr = arr.slice(0, 30);
+            let champ = arr[0];
+            champId = champ.key;
+            document.getElementById('champ').innerHTML = domChamp(champ, champ.popCount);
+            let text = "";
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].key == id) {
+                    let newCount = arr[i].popCount;
+                    document.getElementById('idCount').innerHTML = formatNumber(newCount);
+                    idCount = newCount;
+                }
+                text += domList(arr[i], i, arr[i].popCount);
+            }
+            document.getElementById('updateList').innerHTML = text;
+            document.getElementById('lengthList').innerHTML = `show all eunbin (${lengthList})`;
+        }
+
+        function secondBoard(arr) {
+            arr.sort(function (a, b) {
+                return b.popCount - a.popCount;
+            });
+            let newCountObj = arr.reduce((o, item) => ({ ...o, [item.key]: item.popCount }), {});
+            arr = arr.slice(0, 30);
+            let champ = arr[0];
+            let newChampId = champ.key;
+            if (champId == newChampId) {
+                if (oldCountObj[champId] < newCountObj[champId]) {
+                    setTimeout(updateNumber, 60, 'num-champ', oldCountObj[champId], newCountObj[champId]);
+                }
+            } else {
+                champId = newChampId;
+                document.getElementById('champ').innerHTML = domChamp(champ, oldCountObj[champId]);
+                setTimeout(updateNumber, 60, 'num-champ', oldCountObj[champId], newCountObj[champId]);
+            }
+            // update board with old popCount
+            let text = '';
+            for (let i = 0; i < arr.length; i++) {
+                text += domList(arr[i], i, oldCountObj[arr[i].key]);
+            }
+            document.getElementById('updateList').innerHTML = text;
+
+            for (let i = 0; i < arr.length; i++) {
+                // check idCount and setTimeout for loop number
+                if (arr[i].key == id) {
+                    let oldCount = idCount;
+                    let newCount = arr[i].popCount;
+                    if (oldCount < newCount) {
+                        setTimeout(updateNumber, 60, 'idCount', oldCount, newCount);
+                    }
+                    idCount = newCount;
+                }
+                setTimeout(updateNumber, 60, `num-${arr[i].key}`, oldCountObj[arr[i].key], newCountObj[arr[i].key]);
+            }
+            oldCountObj = newCountObj;
+        }
+
+        function domChamp(item, number) {
+            return `<div class="me-2">#1</div>
+            <img class="header-img me-2"
+                src="${item.imgNormalUrl}"
+                alt="image" />
+            <div class="flex-fill">${item.name}</div>
+            <div id="num-champ">${formatNumber(number)}</div>`
+        }
+        function domList(item, i, number) {
+            return `<a style="text-decoration: none;" href="/${item.key}">
+                <div class="list-group-item list-group-item-action d-flex align-items-center data-info me-1"
+                    onclick="clickPop()">
+                    <h3 class="ranking me-2">${i + 1}</h3>
+                    <div class="flex-shrink-0 me-2">
+                        <img class="" src="${item.imgNormalUrl}" alt="image">
+                    </div>
+                    <h5 class="flex-fill">${item.name}</h5>
+                    <div class="d-flex flex-column me-2">
+                        <h5 class="text-end" id="num-${item.key}">${formatNumber(number)}</h5>
+                    </div>
+                </div>
+            </a>`
+        }
+    </script>
+</body>
+
+</html>

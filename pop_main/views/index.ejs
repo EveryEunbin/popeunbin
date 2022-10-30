@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <%= title %>
+    </title>
+    <meta name="keywords" content="Pop EunBin, Park Eunbin, 박은빈">
+    <meta name="description" content="Pop EunBin, click Park Eunbin characters">
+    <meta name="author" content="Twitter @EveryEunbin">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Pop EunBin">
+    <meta property="og:url" content="https://popeunbin.deta.dev">
+    <meta property="og:description" content="Pop EunBin, click Park Eunbin characters">
+    <meta property="og:image" content="/favicon.png">
+    <meta property="twitter:title" content="Pop EunBin">
+    <meta property="twitter:description" content="Pop EunBin, click Park Eunbin characters">
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:image" content="/favicon.png">
+    <meta property="twitter:creator" content="@EveryEunbin">
+
+    <meta charset="utf-8">
+    <link rel="icon" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;900&amp;family=Noto+Sans+TC:wght@100;300;400;500;900&amp;family=Nunito:wght@300;400;900&amp;display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container mt-3">
+        <div id="cards" class="d-flex align-content-center flex-wrap">
+            <h3 class="position-absolute top-50 start-50 translate-middle">Loading...</h3>
+        </div>
+    </div>  
+
+    <audio autoplay loop>
+        <source src="<%= audio %>" type="audio/mpeg">
+    </audio>
+
+    <script>
+        updateCard();
+
+        // Time loop update card
+        setInterval(updateCard, 12000);
+
+        function updateCard() {
+            fetch('/api/list')
+                .then(res => res.json())
+                .then(json => mainCard(json))
+                .catch(err => console.error(err))
+        }
+        function mainCard(arr) {
+            arr.sort(function (a, b) {
+                return b.popCount - a.popCount;
+            });
+            let text = "";
+            for (let i = 0; i < arr.length; i++) {
+                text += domCard(arr[i]);
+            }
+            document.getElementById('cards').innerHTML = text;
+        }
+
+        function domCard(item) {
+            return `<a href="/${item.key}" class="mx-auto mt-3 text-dark" style="text-decoration: none;">
+                <div class="card pop-card">
+                  <img class="card-img-top mx-auto" src="${item.imgNormalUrl}" alt="${item.name} image" />
+                  <div class="card-body">
+                    <h5 class="card-title">${item.name}</h5>
+                    <div class="card-text">
+                      <div class="text-end">${formatNumber(item.popCount)}</div>
+                    </div>
+                  </div>
+                </div>
+              </a>`
+        }
+
+        function formatNumber(num) {
+            return (new Intl.NumberFormat('en-US')).format(num)
+        }
+    </script>
+</body>
+
+</html>
