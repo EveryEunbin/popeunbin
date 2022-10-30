@@ -1,1 +1,0 @@
-{"id":"d5042b7a-74c9-4eec-8241-7cf839a21d5e","space":9247,"runtime":"python3.9","name":"pop_manage","path":"jg6c7k","project":"c0qow3cl","account":"144798365827","region":"ap-southeast-1","deps":["flask","deta","python-dotenv","werkzeug","pytz","flask-cors","requests"],"envs":["BINARY_CONTENT_TYPES","ACCESS_TOKEN","DETA_PROJECT_KEY"],"public":true,"log_level":"debug","cron":""}
