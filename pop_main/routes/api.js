@@ -13,6 +13,11 @@ router.get('/list', async (req, res) => {
     res.send(result.items);
 });
 
+router.get('/listall', async (req, res) => {
+    const result = await popDB.fetch();
+    res.send(result.items);
+});
+
 router.post('/upload', async (req, res) => {
     const bodyData = req.body;
     try {

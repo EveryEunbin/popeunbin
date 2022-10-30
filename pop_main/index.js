@@ -36,7 +36,11 @@ app.get('/:key', async (req, res) => {
     const { key } = req.params;
     const result = await popDB.get(key);
     if (result) {
-        res.render('page', { data: result })
+        if (result.published){
+            res.render('page', { data: result })
+        } else {
+            res.redirect('/')
+        }
     } else {
         res.redirect('/')
     }
