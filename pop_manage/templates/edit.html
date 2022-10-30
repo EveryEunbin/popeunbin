@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>For Pop EunBin</title>
+    <title>For Pop EunBin - Edit - {{ data.key }}</title>
     <meta name="keywords" content="PopEunBin">
     <meta name="description" content="Submit EunBin Characters for Pop EunBin">
     <meta name="author" content="Twitter @EveryEunbin">
@@ -44,7 +44,7 @@
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" name="name"
-                            placeholder="Character Name- ... e.g. YoungWoo-WoW" required>
+                            placeholder="Character Name- ... e.g. YoungWoo-WoW" value="{{ data.name }}">
                     </div>
                     <!-- Image -->
                     <div class="mb-3">
@@ -60,12 +60,12 @@
                         <div class="mb-3">
                             <label for="imgNormalUrl" class="form-label">Normal picture url</label>
                             <input type="url" class="form-control" id="imgNormalUrl" name="imgNormalUrl"
-                                placeholder="https://forpopeunbin.deta.dev/normal.jpg">
+                                placeholder="https://forpopeunbin.deta.dev/normal.jpg" value="{{ data.imgNormalUrl }}">
                         </div>
                         <div class="mb-3">
                             <label for="imgPopUrl" class="form-label">Pop picture url</label>
                             <input type="url" class="form-control" id="imgPopUrl" name="imgPopUrl"
-                                placeholder="https://forpopeunbin.deta.dev/pop.jpg">
+                                placeholder="https://forpopeunbin.deta.dev/pop.jpg" value="{{ data.imgPopUrl }}">
                         </div>
                     </div>
                     <div id="fileImage" style="display: none;">
@@ -83,7 +83,7 @@
                     <div class="mb-3">
                         <label for="imgInfo" class="form-label">Picture source</label>
                         <input type="text" class="form-control" id="imgInfo" name="imgInfo"
-                            placeholder="youtube, instagram or twitter">
+                            placeholder="youtube, instagram or twitter" value="{{ data.imgInfo }}">
                     </div>
 
                     <!-- Audio -->
@@ -99,7 +99,7 @@
                         <div class="mb-3">
                             <label for="audioUrl" class="form-label">Sound url</label>
                             <input type="url" class="form-control" id="audioUrl" name="audioUrl"
-                                placeholder="https://forpopeunbin.deta.dev/wow.mp3">
+                                placeholder="https://forpopeunbin.deta.dev/wow.mp3" value="{{ data.audioUrl }}">
                         </div>
                     </div>
                     <div id="fileAudio" style="display: none;">
@@ -112,15 +112,15 @@
                     <div class="mb-3">
                         <label for="audioInfo" class="form-label">Sound source</label>
                         <input type="text" class="form-control" id="audioInfo" name="audioInfo"
-                            placeholder="youtube, instagram or twitter">
+                            placeholder="youtube, instagram or twitter" value="{{ data.audioInfo }}">
                     </div>
                     <div class="mb-3">
                         <label for="submitBy" class="form-label">Submitted by (anonymous or your social media name)</label>
-                        <input type="text" class="form-control" id="submitBy" name="submitBy" placeholder="">
+                        <input type="text" class="form-control" id="submitBy" name="submitBy" placeholder="" value="{{ data.submitBy }}">
                     </div>
                     <div class="mb-3 text-center">
                         <button id="prebtn" type="button" class="btn btn-primary" onclick="preview()">Preview</button>
-                        <button type="button" class="btn btn-warning" onclick="clearForm()">Clear</button>
+                        <!-- <button type="button" class="btn btn-warning" onclick="clearForm()">Clear</button> -->
                         <button id="submitbtn" type="button" class="btn btn-success" onclick="submitForm()"><span
                                 class="spinner-border spinner-border-sm" style="display: none;"></span>Submit</button>
                     </div>
@@ -146,8 +146,8 @@
     </div>
 
     <script>
-        const text = "Only Park EunBin pictures can be used. We accept file with less than 3 MB. Sound should have duration less than 2 seconds."
-        alertModal("Please read",text)
+        // const text = "Only Park EunBin pictures can be used. We accept file with less than 3 MB. Sound should have duration less than 2 seconds."
+        // alertModal("Please read",text)
         
         function alertModal(title,content){
             document.getElementById('alertModal').innerHTML = domModal(title,content);
@@ -192,15 +192,6 @@
 
         var submitBtn = document.getElementById('submitbtn');
 
-        /*function changeBtn() {
-            let imgNormal = document.getElementById("imgNormalUrl").value;
-            let imgPop = document.getElementById("imgPopUrl").value;
-            let audioUrl = document.getElementById("audioUrl").value;
-            if (imgNormal != "" && imgPop != "" && audioUrl != "") {
-                document.getElementById('prebtn').disabled = false;
-            } 
-        }*/
-
         function selectType(select, urlId, fileId) {
             if (select.value == 'file') {
                 document.getElementById(urlId).style.display = "none";
@@ -210,14 +201,7 @@
                 document.getElementById(fileId).style.display = "none";
             }
         }
-        function clearForm() {
-            document.getElementById('popShow').style.visibility = "hidden";
-            const inputTag = document.querySelectorAll('input');
-            inputTag.forEach((item) => {
-                item.value = "";
-            });
-            document.getElementById('prebtn').disabled = false;
-        }
+
         function uploadFile(idFirst, idSecond) {
             let fileId = document.getElementById(idFirst);
             let fileData = fileId.files[0]
@@ -242,7 +226,6 @@
         function linkId(json, id) {
             if (json.status == 'success') {
                 document.getElementById(id).value = json.url;
-                // changeBtn()
             } else {
                 alertModal('Alert','Please try to select file again.')
             }
@@ -292,7 +275,7 @@
             }
             submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span>Waiting`
             // console.log(data)
-            fetch('/submit', {
+            fetch('/admin/edit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
@@ -305,8 +288,7 @@
         function resSubmit(json) {
             if (json.status == 'success') {
                 submitBtn.innerHTML = "Complete";
-                newUrl = json.text;
-                window.location.replace(newUrl);
+                window.location.replace('https://forpopeunbin.deta.dev/admin');
             } else {
                 submitBtn.innerHTML = "Submit";
                 alertModal('Alert',json.text)

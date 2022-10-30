@@ -48,6 +48,7 @@
                         <th scope="col" style="padding-bottom:15px;">Sound</th>
                         <th scope="col" style="padding-bottom:15px;">Preview</th>
                         <th scope="col" style="padding-bottom:15px;">Update</th>
+                        <th scope="col" style="padding-bottom:15px;">Edit</th>
                         <th scope="col" style="padding-bottom:15px;">Delete</th>
                     </tr>
                 </thead>
@@ -63,6 +64,7 @@
                         <td><a href="{{item.audioUrl}}" target="_blank">link</a></td>
                         <td><a href="/p/{{item.key}}" target="_blank">link</a></td>
                         <td><button onclick="updateKey('{{item.key}}')">update</button></td>
+                        <td><a href="/admin/edit/{{item.key}}" target="_blank">edit</a></td>
                         <td><button onclick="deleteKey('{{item.key}}')">delete</button></td>
                     </tr>
                     {% endfor %}

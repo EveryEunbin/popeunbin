@@ -145,6 +145,43 @@ def adminupdate():
         except:
             return {'status': 'error', 'text': 'Error from Server. Please try to update it again'}
 
+@app.route('/admin/edit', methods=['POST'])
+def adminedit():
+    name = request.cookies.get('name')
+    if not name:
+        return redirect('/login')
+    db_res = db_admin.fetch({'name': name})
+    if db_res.count==0:
+        res = make_response(redirect('/login'))
+        res.set_cookie('name', '', expires=0)
+        return res
+    else:
+        try:
+            data = request.get_json()            
+            res_main = db_main.fetch()
+            two_random_str = ''.join(random.SystemRandom().choice(string.ascii_letters) for _ in range(2))
+            data['popCount'] = 0
+            data['published'] = True
+            data['key'] = str(res_main.count+1).zfill(3)+two_random_str.lower()
+            db_main.put(data)
+            return {'status': 'success', 'text': 'Data was added to Pop EunBin'}
+        except:
+            return {'status': 'error', 'text': 'Error from Server. Please try to submit it again'}
+
+@app.route('/admin/edit/<key>', methods=['GET'])
+def admineditkey(key):
+    name = request.cookies.get('name')
+    if not name:
+        return redirect('/login')
+    db_res = db_admin.fetch({'name': name})
+    if db_res.count==0:
+        res = make_response(redirect('/login'))
+        res.set_cookie('name', '', expires=0)
+        return res
+    else:
+        res = db.get(key)
+        return render_template('edit.html', data = res)
+
 @app.route('/admin/delete', methods=['POST'])
 def admindelete():
     name = request.cookies.get('name')
@@ -164,7 +201,7 @@ def admindelete():
 @app.route('/<name>', methods=['GET'])
 def getFile(name):
     res = drive.get(name)
-    return send_file(res, download_name=name)
+    return send_file(res, download_name=name, max_age=604800) # cache file for 7 days = 604800 seconds
 
 if __name__ == "__main__":
     app.run(debug=True)
