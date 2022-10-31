@@ -21,15 +21,15 @@ app.set("view engine", "ejs");
 app.disable('x-powered-by');
 
 app.get('/', async (req, res) => {
-    const songList = ["thesamebackwardsandforwards.mp3", "thekingsaffection.mp3", "trumerei.mp3",  "fullpower.mp3", "dreamme.mp3", "goodday.mp3"]
+    // const songList = ["thesamebackwardsandforwards.mp3", "thekingsaffection.mp3", "trumerei.mp3",  "fullpower.mp3", "dreamme.mp3", "goodday.mp3"]
     
-    res.render('index', { title: 'Pop EunBin', audio: "https://forpopeunbin.deta.dev/" + songList[Math.floor(Math.random() * songList.length)]});
+    res.render('index');
 });
 
 app.use('/api', apiRouter);
 
 app.get('/summary', async (req, res) => {
-    res.render('summary', { title: 'Pop EunBin - Summary' });
+    res.render('summary');
 });
 
 app.get('/:key', async (req, res) => {

@@ -44,7 +44,7 @@
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" name="name"
-                            placeholder="Character Name- ... e.g. YoungWoo-WoW" required>
+                            placeholder="EunBin or character Name- ... e.g. YoungWoo-Wow" required>
                     </div>
                     <!-- Image -->
                     <div class="mb-3">
@@ -83,7 +83,7 @@
                     <div class="mb-3">
                         <label for="imgInfo" class="form-label">Picture source</label>
                         <input type="text" class="form-control" id="imgInfo" name="imgInfo"
-                            placeholder="youtube, instagram or twitter">
+                            placeholder="url">
                     </div>
 
                     <!-- Audio -->
@@ -112,11 +112,11 @@
                     <div class="mb-3">
                         <label for="audioInfo" class="form-label">Sound source</label>
                         <input type="text" class="form-control" id="audioInfo" name="audioInfo"
-                            placeholder="youtube, instagram or twitter">
+                            placeholder="url">
                     </div>
                     <div class="mb-3">
-                        <label for="submitBy" class="form-label">Submitted by (anonymous or your social media name)</label>
-                        <input type="text" class="form-control" id="submitBy" name="submitBy" placeholder="">
+                        <label for="submitBy" class="form-label">Submitted by (Anonymous or your (social media) name)</label>
+                        <input type="text" class="form-control" id="submitBy" name="submitBy" placeholder="Anonymous">
                     </div>
                     <div class="mb-3 text-center">
                         <button id="prebtn" type="button" class="btn btn-primary" onclick="preview()">Preview</button>
@@ -146,7 +146,7 @@
     </div>
 
     <script>
-        const text = "Only Park EunBin pictures can be used. We accept file with less than 3 MB. Sound should have duration less than 2 seconds."
+        const text = "Only Park EunBin pictures can be used. We accept file with less than 2 MB. Two pictures should have the same ratio and sound should have duration less than 2 seconds."
         alertModal("Please read",text)
         
         function alertModal(title,content){
@@ -186,9 +186,13 @@
         selectType(document.getElementById('selectImage'), 'urlImage', 'fileImage')
         selectType(document.getElementById('selectAudio'), 'urlAudio', 'fileAudio')
 
-        // document.getElementById('imgNormalUrl').addEventListener("change", changeBtn);
-        // document.getElementById('imgPopUrl').addEventListener("change", changeBtn);
-        // document.getElementById('audioUrl').addEventListener("change", changeBtn);
+        document.getElementById('audioUrl').addEventListener("change", wowSource);
+        
+        function wowSource(){
+            if(document.getElementById('audioUrl').value== "https://forpopeunbin.deta.dev/wow.mp3"){
+                document.getElementById('audioInfo').value = "https://www.youtube.com/shorts/w4FhMqOOuSw";
+            }
+        }
 
         var submitBtn = document.getElementById('submitbtn');
 
@@ -222,8 +226,8 @@
             let fileId = document.getElementById(idFirst);
             let fileData = fileId.files[0]
             // check file size (< 3MB)
-            if (fileData.size > 3 * 1024 * 1024) {
-                alertModal('Alert','File must be less than 3 MB.')
+            if (fileData.size > 2 * 1024 * 1024) {
+                alertModal('Alert','File must be less than 2 MB.')
                 fileId.value = "";
                 return
             }
@@ -267,20 +271,20 @@
                     if (pattern.test(item.value)) {
                         data[item.id] = item.value;
                     } else {
-                        return alertModal('Alert','Please use only .png, .jpeg or .jpg.')
+                        return alertModal('Alert','Please use only .png, .jpeg or .jpg., or url ending with .png .jpeg or .jpg')
                     }
                 } else if (item.id == 'audioUrl') {
                     const pattern = (/\.(mp3)$/i);
                     if (pattern.test(item.value)) {
                         data[item.id] = item.value;
                     } else {
-                        return alertModal('Alert','Please use only .mp3.')
+                        return alertModal('Alert','Please use only .mp3. or url ending with .mp3')
                     }
                 } else if (item.id == 'submitBy') {
                     if (item.value != '') {
                         data[item.id] = item.value;
                     } else {
-                        return alertModal('Alert','Please give your social media name or anonymous')
+                        return alertModal('Alert','Please give your (social media) name or anonymous')
                     }
                 } else {
                     if (item.value != '') {

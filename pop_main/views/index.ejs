@@ -2,9 +2,7 @@
 <html>
 
 <head>
-    <title>
-        <%= title %>
-    </title>
+    <title>Pop EunBin</title>
     <meta name="keywords" content="Pop EunBin, Park Eunbin, 박은빈">
     <meta name="description" content="Pop EunBin, click Park Eunbin characters">
     <meta name="author" content="Twitter @EveryEunbin">
@@ -39,15 +37,20 @@
         <div id="cards" class="d-flex align-content-center flex-wrap">
             <h3 class="position-absolute top-50 start-50 translate-middle">Loading...</h3>
         </div>
-    </div>  
+    </div>
 
     <audio autoplay loop>
-        <source src="<%= audio %>" type="audio/mpeg">
+        <source src="https://forpopeunbin.deta.dev/cinematic-documentary-115669.mp3" type="audio/mpeg">
     </audio>
+    <div style="display: none;">
+        Music by <a
+            href="https://pixabay.com/users/lexin_music-28841948/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=115669">Lexin_Music</a>
+        from <a
+            href="https://pixabay.com/music//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=115669">Pixabay</a>
+    </div>
 
     <script>
         updateCard();
-
         // Time loop update card
         setInterval(updateCard, 12000);
 
