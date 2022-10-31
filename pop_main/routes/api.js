@@ -10,12 +10,12 @@ router.get('/', async (req, res) => {
 
 router.get('/list', async (req, res) => {
     const result = await popDB.fetch({published: true});
-    res.send(result.items);
+    res.json(result.items);
 });
 
 router.get('/listall', async (req, res) => {
     const result = await popDB.fetch();
-    res.send(result.items);
+    res.json(result.items);
 });
 
 router.post('/upload', async (req, res) => {

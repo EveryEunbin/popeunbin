@@ -50,7 +50,7 @@ app.get('/:key', async (req, res) => {
 
 
 app.listen(8000, function () {
-    // console.log("Server is running on port 8080 ");
+    // console.log("Server is running on port 8000 ");
 });
 
 // for deta.dev
